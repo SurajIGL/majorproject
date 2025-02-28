@@ -1,0 +1,365 @@
+{
+	"info": {
+		"_postman_id": "7e8c5a7b-8c3d-4c0e-b307-fa7c9d7e6e1a",
+		"name": "Rental App API",
+		"description": "A collection for testing the Rental App API endpoints",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Authentication",
+			"item": [
+				{
+					"name": "User Registration",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"John Doe\",\n    \"email\": \"john.doe@example.com\",\n    \"password\": \"securePassword123\",\n    \"phone\": \"1234567890\",\n    \"address\": \"123 Main St, Anytown, USA\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/auth/register",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"auth",
+								"register"
+							]
+						},
+						"description": "Register a new user in the system"
+					}
+				},
+				{
+					"name": "User Login",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"email\": \"john.doe@example.com\",\n    \"password\": \"securePassword123\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/auth/login",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"auth",
+								"login"
+							]
+						},
+						"description": "Log in an existing user"
+					},
+					"response": [
+						{
+							"name": "Successful Login",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"email\": \"john.doe@example.com\",\n    \"password\": \"securePassword123\"\n}"
+								},
+								"url": {
+									"raw": "{{base_url}}/api/auth/login",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"api",
+										"auth",
+										"login"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [],
+							"cookie": [],
+							"body": "{\n    \"token\": \"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYwNmYxYTgwZTMyM2JkMmZjODlkZGNiNyIsImlhdCI6MTYxNzg4NzQ0MCwiZXhwIjoxNjE3OTczODQwfQ.example_token\",\n    \"user\": {\n        \"_id\": \"606f1a80e323bd2fc89ddcb7\",\n        \"name\": \"John Doe\",\n        \"email\": \"john.doe@example.com\"\n    }\n}"
+						}
+					]
+				}
+			],
+			"description": "User authentication operations"
+		},
+		{
+			"name": "Items",
+			"item": [
+				{
+					"name": "Create Item Listing",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{auth_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{auth_token}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"title\": \"Professional DSLR Camera\",\n    \"description\": \"High-quality DSLR camera, perfect for professional shoots\",\n    \"category\": \"electronics\",\n    \"price\": 50.00,\n    \"location\": {\n        \"address\": \"456 Market St, San Francisco, CA\",\n        \"coordinates\": {\n            \"lat\": 37.789,\n            \"lng\": -122.401\n        }\n    },\n    \"images\": [\"https://example.com/camera1.jpg\", \"https://example.com/camera2.jpg\"],\n    \"availabilityCalendar\": {\n        \"startDate\": \"2023-12-01\",\n        \"endDate\": \"2024-01-31\"\n    },\n    \"condition\": \"excellent\",\n    \"tags\": [\"camera\", \"photography\", \"electronics\"]\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/items",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"items"
+							]
+						},
+						"description": "Create a new item listing for rent"
+					}
+				},
+				{
+					"name": "Geo-location Search",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/items/search?lat=37.789&lng=-122.401&radius=10",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"items",
+								"search"
+							],
+							"query": [
+								{
+									"key": "lat",
+									"value": "37.789",
+									"description": "Latitude coordinate"
+								},
+								{
+									"key": "lng",
+									"value": "-122.401",
+									"description": "Longitude coordinate"
+								},
+								{
+									"key": "radius",
+									"value": "10",
+									"description": "Search radius in kilometers"
+								},
+								{
+									"key": "category",
+									"value": "electronics",
+									"description": "Optional category filter",
+									"disabled": true
+								}
+							]
+						},
+						"description": "Search for items near a specific location"
+					}
+				}
+			],
+			"description": "Item listing and search operations"
+		},
+		{
+			"name": "Payments",
+			"item": [
+				{
+					"name": "Initiate Payment",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{auth_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{auth_token}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"itemId\": \"60a12c5e8f7a7b2d3c4e5f6g\",\n    \"startDate\": \"2023-12-10\",\n    \"endDate\": \"2023-12-15\",\n    \"paymentMethod\": {\n        \"type\": \"credit_card\",\n        \"token\": \"tok_visa\"\n    },\n    \"amount\": 250.00,\n    \"currency\": \"USD\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/payments/create",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"payments",
+								"create"
+							]
+						},
+						"description": "Initialize payment for an item rental"
+					}
+				}
+			],
+			"description": "Payment processing operations"
+		},
+		{
+			"name": "Bookings",
+			"item": [
+				{
+					"name": "Book Rental",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{auth_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{auth_token}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"itemId\": \"60a12c5e8f7a7b2d3c4e5f6g\",\n    \"startDate\": \"2023-12-10\",\n    \"endDate\": \"2023-12-15\",\n    \"paymentId\": \"pay_H32jkh4j23h4k2j34\",\n    \"message\": \"I'll pick up the camera on the morning of the 10th.\",\n    \"deliveryMethod\": \"pickup\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/bookings",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"bookings"
+							]
+						},
+						"description": "Create a new booking for an item"
+					}
+				}
+			],
+			"description": "Booking management operations"
+		},
+		{
+			"name": "Reviews",
+			"item": [
+				{
+					"name": "Add Review",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{auth_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{auth_token}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"itemId\": \"60a12c5e8f7a7b2d3c4e5f6g\",\n    \"bookingId\": \"60b23d6f9a8b7c6d5e4f3g2h\",\n    \"rating\": 5,\n    \"comment\": \"The camera was in excellent condition and worked perfectly for my photoshoot. The owner was very helpful with setup instructions.\",\n    \"photos\": [\"https://example.com/review1.jpg\"]\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/reviews",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"reviews"
+							]
+						},
+						"description": "Add a review for a completed rental"
+					}
+				}
+			],
+			"description": "Review management operations"
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "base_url",
+			"value": "http://localhost:5000",
+			"type": "string"
+		},
+		{
+			"key": "auth_token",
+			"value": "your_jwt_token_here",
+			"type": "string"
+		}
+	]
+}
